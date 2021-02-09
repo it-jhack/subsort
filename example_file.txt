@@ -1,0 +1,6 @@
+example.com
+sub.examble.com
+sub2.example.com
+test.com
+sub.test.com
+anothertest.com
