@@ -26,26 +26,9 @@ anothertest.com
 ```
 
 ## How to Run
-```bash
-python subsort.py -f <subdomains_file.txt>
-```
-You can also import it to your program:
+Run subsort.py on your terminal with the txt file containing the subdomains as argument.
 ```python
-import subsort
-
-subds_list = [
-    'example.com',
-    'sub.example.com',
-    'sub2.example.com',
-    'test.com',
-    'sub.test.com',
-    'anothertest.com',
-]
-
-new_list = []
-new_list.extend(subsort.del_list_subds_redund(subds_list))
-
-print(new_list)
+python subsort.py subdomains_file.txt
 ```
 
 ## Requirements
