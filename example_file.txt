@@ -1,5 +1,5 @@
 example.com
-sub.examble.com
+sub.example.com
 sub2.example.com
 test.com
 sub.test.com
