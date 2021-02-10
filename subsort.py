@@ -15,58 +15,76 @@ such as grep.
 
 import argparse
 
+
 parser = argparse.ArgumentParser(description='Remove redundancies returning an optimized list')
-parser.add_argument('subdomains_txt_path', type=str, help='Path to the .txt file containing the list to be optimized')
+parser.add_argument('-f','--file', help='txt file path with the subdomains list')
 args = parser.parse_args()
 
-def del_file_subds_redund(subdomains_txt_path):
-    with open(subdomains_txt_path, 'r') as lfp:
-        inscope_list = []
-        for line in lfp:
-            # add '.' at the beginning of each subdomain to
-            # appropriately test subdomains occurrences in logic parsing.
-            inscope_list.append('.' + line.strip('\n'))
+
+def subds_occurrence_logic_check(subds_list):
+    sorted_subds_list = sorted(subds_list, key=len)
+    subds_list_range = len(sorted_subds_list)
+
+    # main list to add unique subdomains.
+    optimized_list = [] 
+
+    for i in range(subds_list_range):
         
-        sorted_inscope_list = sorted(inscope_list, key=len)
-        inscope_range = len(sorted_inscope_list)
+        # temporary list
+        temp_list = []
+        temp_list.extend(sorted_subds_list)
+        temp_list.remove(sorted_subds_list[i])
+        temp_list_string = str(temp_list)
 
-        # main list to add unique subdomains.
-        optimized_list = [] 
-
-        for i in range(inscope_range):
-            
-            # temporary list
-            temp_list = []
-            temp_list.extend(sorted_inscope_list)
-            temp_list.remove(sorted_inscope_list[i])
-            temp_list_string = str(temp_list)
-
-            # main logic is on if-else
-            if sorted_inscope_list[i] in temp_list_string:
+        # main logic is on if-else
+        if sorted_subds_list[i] in temp_list_string:
+            flag = 0
+            for item in optimized_list:
+                if item in sorted_subds_list[i]:
+                    flag += 1
+            if flag == 0:
+                optimized_list.append(sorted_subds_list[i])
+        else:
+            temp_list_string_2 = str(optimized_list)
+            if sorted_subds_list[i] not in temp_list_string_2:
                 flag = 0
                 for item in optimized_list:
-                    if item in sorted_inscope_list[i]:
+                    if item in sorted_subds_list[i]:
                         flag += 1
                 if flag == 0:
-                    optimized_list.append(sorted_inscope_list[i])
-            else:
-                temp_list_string_2 = str(optimized_list)
-                if sorted_inscope_list[i] not in temp_list_string_2:
-                    flag = 0
-                    for item in optimized_list:
-                        if item in sorted_inscope_list[i]:
-                            flag += 1
-                    if flag == 0:
-                        optimized_list.append(sorted_inscope_list[i])
+                    optimized_list.append(sorted_subds_list[i])
 
     # removing '.' at the beginning of each subdomain (not necessary anymore).
     for i, element in enumerate(optimized_list):
         optimized_list[i] = element.strip('.')
 
-    # putting elements in alphabetical order.
-    optimized_list.sort() 
+    # returning elements in alphabetical order.
+    sorted_optimized_list = []
+    sorted_optimized_list.extend(sorted(optimized_list, key=len))
+    return sorted_optimized_list
 
+
+def del_file_subds_redund(subds_file):
+    subds_list = []
+    with open(subds_file, 'r') as lfp:
+        for line in lfp:
+            # add '.' at the beginning of each subdomain to
+            # appropriately test subdomains occurrences in logic parsing.
+            subds_list.append('.' + line.strip('\n'))
+    
+    optimized_list = []
+    optimized_list.extend(subds_occurrence_logic_check(subds_list))
     return optimized_list
+
+
+def del_list_subds_redund(subdomains_list):
+    subds_list = []
+    for element in subdomains_list:
+        subds_list.append('.' + element)
+    optimized_list = []
+    optimized_list.extend(subds_occurrence_logic_check(subds_list))
+    return optimized_list
+
 
 def print_list_elements(list):
     for element in list:
@@ -75,7 +93,8 @@ def print_list_elements(list):
 
 if __name__ == '__main__':
 
-    optimal_subd_list = []
-    optimal_subd_list.extend(del_file_subds_redund(args.subdomains_txt_path))
+    if args.file:
+        optimal_subd_list = []
+        optimal_subd_list.extend(del_file_subds_redund(args.file))
 
-    print_list_elements(optimal_subd_list)
+        print_list_elements(optimal_subd_list)
