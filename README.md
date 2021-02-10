@@ -26,7 +26,10 @@ anothertest.com
 ```
 
 ## How to Run
+Run subsort.py on your terminal with the txt file containing the subdomains as argument.
+```python
 python subsort.py subdomains_file.txt
+```
 
 ## Requirements
 Python 2.7 or higher
