@@ -10,20 +10,20 @@ Suppose you have a 30 Gigabytes .json file full of DNS entries. If you grep for 
 You provide a .txt file containing  domains and subdomains and this program removes the subdomain redundancies, returning an optimized list, which can later be used by another tool such as grep.
 
 So if you provide a .txt file as argument containing:
-'''
+```
 example.com
 sub.example.com
 another.example.com
 test.com
 sub.test.com
 anothertest.com
-'''
+```
 Then, the application would return:
-'''
+```
 example.com
 test.com
 anothertest.com
-'''
+```
 
 ## How to Run
 python subsort.py subdomains_file.txt
